@@ -4,6 +4,7 @@
   "description": "simple web app, that shows who faster in button pressing",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon ./server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Vikentii Ekgart && Aleksandr Ivanov",
