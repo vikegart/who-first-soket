@@ -1,0 +1,38 @@
+html,
+body {
+  height: 100%;
+}
+
+.main {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+}
+
+.team-name {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.action-button {
+    width: 30%;
+    margin-top: 20px;
+    height: 40px;
+}
+
+.wait {
+    background: #447cff;
+}
+
+.ready {
+    background: #f3ef00;
+}
+
+.in-progress {
+    background: #1cf300;
+}

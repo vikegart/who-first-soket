@@ -1,0 +1,43 @@
+html,
+body {
+  height: 100%;
+}
+
+.main {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.team-name-group, .answer-group {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    width: 90%;
+}
+
+.team-name {
+    font-size: 30px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    width: 100%;
+}
+
+.team-name-input {
+    width: 95%;
+}
+
+.login-button, .logout-button {
+    width: 30%;
+    margin-top: 20px;
+    height: 40px;
+}
+
+.answer-button {
+    background: url("http://texterra.ru/upload/img/2014-07-14-tex-02.jpg") center no-repeat;
+    border: 0;
+    outline: 0;
+}
