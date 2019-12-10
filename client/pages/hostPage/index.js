@@ -1,9 +1,14 @@
-'use strict'
+const socket = io();
 
 const main = document.getElementsByClassName("main")[0];
 const nameGroup = document.getElementsByClassName("team-name")[0];
+const answerGroup = document.getElementsByClassName("answer-group")[0];
 
 const actionButton = document.getElementsByClassName("action-button")[0];
+const yesButton = document.getElementsByClassName("yes-button")[0];
+const noButton = document.getElementsByClassName("no-button")[0];
+
+
 const statesMap = {
     wait: "wait",
     inProgress: "in-progress",
@@ -11,35 +16,54 @@ const statesMap = {
 }
 
 let state = statesMap.wait;
+let teamsTried = []; 
 
 const switchState = newState => {
     main.classList.remove(state);
     state = newState;
     main.classList.add(state);
+    if (newState === statesMap.inProgress) {
+        answerGroup.classList.remove("hidden");
+        actionButton.classList.add("hidden");
+    } else {
+        answerGroup.classList.add("hidden");
+        actionButton.classList.remove("hidden");
+        socket.emit("ready", state === statesMap.ready);
+    }
 }
 
 const handlersMap = {
-    [statesMap.wait]: e => {
+    [statesMap.wait]: () => {
         switchState(statesMap.ready);
         nameGroup.innerHTML = "Ждем ответа!";
     },
-    [statesMap.ready]: e => {
-        switchState(statesMap.inProgress);
-        nameGroup.innerHTML = "Отвечает команда \"Шлакоблокунь\"";
-    },
-    [statesMap.inProgress]: e => {
+    [statesMap.ready]: () => {
         switchState(statesMap.wait);
+        teamsTried = [];
         nameGroup.innerHTML = " ";
     },
+    [statesMap.inProgress]: isRightAnswer => {
+        if (isRightAnswer) {
+            switchState(statesMap.wait);
+            teamsTried = [];
+            nameGroup.innerHTML = " ";
+        } else {
+            switchState(statesMap.ready);
+            nameGroup.innerHTML = "Ждем ответа!";
+        }
+    },
 }
 
-const onActionClick = e => {
-    e.preventDefault();
-    e.stopPropagation();
+actionButton.addEventListener('click', e => handlersMap[state]());
+yesButton.addEventListener('click', e => onDesisionClick(true));
+noButton.addEventListener('click', e => onDesisionClick(false));
 
-    handlersMap[state](e);
-}
+socket.on('answer', teamName => {
+    if (state !== statesMap.ready) return;
+    if (teamsTried.includes(teamName)) return socket.emit('tried', teamName);
+    switchState(statesMap.inProgress);
+    teamsTried.push(teamName);
+    nameGroup.innerHTML = `Отвечает команда \"${teamName}\"`;
+});
 
-
-actionButton.addEventListener("click", onActionClick);
 
