@@ -55,8 +55,8 @@ const handlersMap = {
 }
 
 actionButton.addEventListener('click', e => handlersMap[state]());
-yesButton.addEventListener('click', e => onDesisionClick(true));
-noButton.addEventListener('click', e => onDesisionClick(false));
+yesButton.addEventListener('click', e => handlersMap[state](true));
+noButton.addEventListener('click', e => handlersMap[state](false));
 
 socket.on('answer', teamName => {
     if (state !== statesMap.ready) return;
