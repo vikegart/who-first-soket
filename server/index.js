@@ -50,6 +50,9 @@ app.get("/chto/", function(req, res) {
 app.get('/chto/index.js', function(req, res) {
   res.sendFile((path.join(__dirname, `../client/${routerFilesMap.host}index.js`)));
 });
+app.get('/chto/index.css', function(req, res) {
+  res.sendFile((path.join(__dirname, `../client/${routerFilesMap.host}index.css`)));
+});
 
 io.on("connection", function(socket) {
   Usercounter = Usercounter + 1;
