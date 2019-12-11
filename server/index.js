@@ -14,10 +14,6 @@ const routerFilesMap = {
   shared: '/shared/',
 }
 
-let Usercounter = 0;
-
-const voicesArr = [];
-
 app.get('/shared/shared.css', function(req, res) {
   res.sendFile((path.join(__dirname, `../client/${routerFilesMap.shared}shared.css`)));
 });
@@ -41,8 +37,6 @@ app.get('/index.css', function(req, res) {
 });
 
 
-
-
 app.get("/chto/", function(req, res) {
   res.sendFile(path.join(__dirname, `../client/${routerFilesMap.host}index.html`));
 });
@@ -55,23 +49,19 @@ app.get('/chto/index.css', function(req, res) {
 });
 
 io.on("connection", function(socket) {
-  Usercounter = Usercounter + 1;
-  io.emit("user", Usercounter);
   console.log("user is connected");
   socket.on("disconnect", function() {
-    Usercounter = Usercounter - 1;
-    io.emit("user", Usercounter);
     console.log("user disconnected");
   });
 
-  socket.on("audioMessage", function(msg) {
-    io.emit("audioMessage", msg);
-    voicesArr.push({timeStamp: Date(), audioBlob: msg});
+  socket.on("ready", function(ready) {
+    io.emit("ready", ready);
   });
 
-  socket.on("recordStarted", () => {
-    io.emit("playStarSound");
-  })
+  socket.on("answer", function(teamName) {
+    io.emit("answer", teamName);
+  });
+
 });
 
 http.listen(port, function() {
