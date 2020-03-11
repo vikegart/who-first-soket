@@ -1,52 +1,20 @@
-const app = require("express")();
+const express = require('express');
+const app = express();
 const http = require("http").Server(app);
-const path = require('path');
 const cors = require('cors');
 
 const io = require("socket.io")(http);
 const port = process.env.PORT || 3000;
 
+const SECURE_URL = '/chto';
+const SHARED_URL = '/shared';
+
 app.use(cors());
 
-const routerFilesMap = {
-  host: '/pages/hostPage/',
-  player: '/pages/playerPage/',
-  shared: '/shared/',
-}
 
-app.get('/shared/shared.css', function(req, res) {
-  res.sendFile((path.join(__dirname, `../client/${routerFilesMap.shared}shared.css`)));
-});
-
-app.get('/shared/normalize.css', function(req, res) {
-  res.sendFile((path.join(__dirname, `../client/${routerFilesMap.shared}normalize.css`)));
-});
-
-
-
-app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname, `../client/${routerFilesMap.player}index.html`));
-});
-
-app.get('/index.js', function(req, res) {
-  res.sendFile((path.join(__dirname, `../client/${routerFilesMap.player}index.js`)));
-});
-
-app.get('/index.css', function(req, res) {
-  res.sendFile((path.join(__dirname, `../client/${routerFilesMap.player}index.css`)));
-});
-
-
-app.get("/chto/", function(req, res) {
-  res.sendFile(path.join(__dirname, `../client/${routerFilesMap.host}index.html`));
-});
-
-app.get('/chto/index.js', function(req, res) {
-  res.sendFile((path.join(__dirname, `../client/${routerFilesMap.host}index.js`)));
-});
-app.get('/chto/index.css', function(req, res) {
-  res.sendFile((path.join(__dirname, `../client/${routerFilesMap.host}index.css`)));
-});
+app.use('/', express.static('client/pages/playerPage'));
+app.use(SECURE_URL, express.static('client/pages/hostPage'));
+app.use(SHARED_URL, express.static('client/shared'));
 
 io.on("connection", function(socket) {
   console.log("user is connected");
