@@ -8,6 +8,8 @@ const actionButton = document.getElementsByClassName("action-button")[0];
 const yesButton = document.getElementsByClassName("yes-button")[0];
 const noButton = document.getElementsByClassName("no-button")[0];
 
+window.history.replaceState({}, '','🐬'); //hide the real url
+
 
 const statesMap = {
     wait: "wait",
