@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon ./server/index.js",
     "start:pm2": "pm2 start ./server/index.js --name \" si-game \" ",
+    "herouku": "npm & node ./server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Vikentii Ekgart && Aleksandr Ivanov",
